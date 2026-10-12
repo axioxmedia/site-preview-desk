@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="gold">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="icon" href="/brand/logo.png" type="image/png" />
+  <title>本地站点预览器</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Noto+Sans+SC:wght@400;500;600&family=Sora:wght@500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/assets/styles.css" />
+</head>
+<body class="aio-app axiox-shell">
+  <div class="bg-grid"></div>
+  <div class="floor"></div>
+  <main class="app">
+    <header class="topbar">
+      <div class="brand">
+        <div class="mark"><img src="/brand/logo.png" alt="Axiox" /></div>
+        <div>
+          <h1 data-i18n="appTitle">本地站点预览器</h1>
+          <p data-i18n="appSubtitle">加载 ZIP 与 SQL，一键启动本地服务器预览</p>
+        </div>
+      </div>
+      <div class="top-actions">
+        <div class="theme-switch" id="themeSwitch" data-on="gold" role="group">
+          <span class="theme-slider" aria-hidden="true"></span>
+          <button type="button" data-theme="gold" id="themeGold"><span data-i18n="themeGold">黑金</span></button>
+          <button type="button" data-theme="light" id="themeLight"><span data-i18n="themeLight">浅色</span></button>
+        </div>
+        <div class="lang-switch" id="uiLangSwitch">
+          <button type="button" data-ui-lang="zh" class="on">中文</button>
+          <button type="button" data-ui-lang="en">EN</button>
+        </div>
+      </div>
+    </header>
+
+    <nav class="steps" id="stepNav"></nav>
+    <button type="button" class="restart-btn" id="restartBtn" hidden data-i18n="restart">重新开始</button>
+
+    <section class="workspace">
+      <article class="wizard-card on" id="stage0">
+        <div class="kicker">Step 01</div>
+        <h2 data-i18n="step1Title">选择 ZIP 源码包</h2>
+        <p class="lead" data-i18n="step1Lead">点击按钮弹出文件管理器，选择包含网站源码的 ZIP。</p>
+        <div class="form-scroll">
+          <button class="primary" id="pickZip" type="button" data-i18n="pickZip">选择 ZIP 文件</button>
+          <p class="hint" id="zipHint" data-i18n="zipHint">尚未选择</p>
+        </div>
+        <div class="actions">
+          <button class="primary" id="next1" type="button" disabled data-i18n="next">下一步</button>
+        </div>
+      </article>
+
+      <article class="wizard-card" id="stage1">
+        <div class="kicker">Step 02</div>
+        <h2 data-i18n="step2Title">选择 SQL 文件</h2>
+        <p class="lead" data-i18n="step2Lead">选择数据库导入文件（可选但推荐）。</p>
+        <div class="form-scroll">
+          <button class="primary" id="pickSql" type="button" data-i18n="pickSql">选择 SQL 文件</button>
+          <p class="hint" id="sqlHint" data-i18n="sqlHint">尚未选择</p>
+        </div>
+        <div class="actions">
+          <button class="ghost" id="back2" type="button" data-i18n="back">上一步</button>
+          <button class="primary" id="next2" type="button" data-i18n="next">下一步</button>
+        </div>
+      </article>
+
+      <article class="wizard-card" id="stage2">
+        <div class="kicker">Step 03</div>
+        <h2 data-i18n="step3Title">服务器设定</h2>
+        <p class="lead" data-i18n="step3Lead">根据项目自动检测，可调整 PHP 相关选项。</p>
+        <div class="form-scroll">
+          <div id="detectBox" class="detect-box"></div>
+          <label data-i18n="phpVerLabel">PHP 版本（如可用）</label>
+          <input id="phpVer" type="text" readonly />
+          <label data-i18n="extLabel">启用扩展（如适用）</label>
+          <div id="extList" class="ext-list"></div>
+        </div>
+        <div class="actions">
+          <button class="ghost" id="back3" type="button" data-i18n="back">上一步</button>
+          <button class="primary" id="next3" type="button" data-i18n="next">下一步</button>
+        </div>
+      </article>
+
+      <article class="wizard-card" id="stage3">
+        <div class="kicker">Step 04</div>
+        <h2 data-i18n="step4Title">启动预览</h2>
+        <p class="lead" data-i18n="step4Lead">按钮已就绪。点击后将解压、导入并启动临时本地服务器，然后打开默认浏览器。</p>
+        <div class="form-scroll">
+          <button class="primary" id="startBtn" type="button" data-i18n="startBtn">启动预览并打开浏览器</button>
+          <p class="hint" id="statusHint"></p>
+          <div id="runningBox" hidden>
+            <p id="urlShow" class="url-show"></p>
+            <div class="row-btns">
+              <button class="soft" id="openAgain" type="button" data-i18n="openAgain">再次打开浏览器</button>
+              <button class="danger" id="stopBtn" type="button" data-i18n="stopBtn">停止并清理</button>
+            </div>
+          </div>
+        </div>
+        <div class="actions">
+          <button class="ghost" id="back4" type="button" data-i18n="back">上一步</button>
+        </div>
+      </article>
+    </section>
+
+    <footer class="app-version" id="appVersion">v1.0.0</footer>
+  </main>
+
+  <div class="preview-overlay" id="previewOverlay" hidden>
+    <div class="preview-bar">
+      <span id="previewUrlLabel"></span>
+      <button type="button" id="closePreview" data-i18n="stopBtn">停止并关闭</button>
+    </div>
+    <iframe id="previewFrame" src="about:blank"></iframe>
+  </div>
+
+  <script src="/assets/app.js"></script>
+</body>
+</html>

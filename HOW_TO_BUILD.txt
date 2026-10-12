@@ -1,0 +1,10 @@
+HOW TO BUILD Site Preview Desk
+
+1. Install Python 3.11+ and add to PATH.
+2. Open a terminal in this folder.
+3. Run: build_exe.bat
+4. The EXE appears in dist/SitePreviewDesk.exe
+
+Or use GitHub Deploy Desk to deploy this repo.
+
+Requirements are in requirements.txt and requirements-build.txt.
